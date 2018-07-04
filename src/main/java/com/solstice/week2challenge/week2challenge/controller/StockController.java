@@ -3,9 +3,8 @@ package com.solstice.week2challenge.week2challenge.controller;
 import com.solstice.week2challenge.week2challenge.model.Stock;
 import com.solstice.week2challenge.week2challenge.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,17 +31,10 @@ public class StockController
 //        return null;
 //    }
 //
-//    @PostMapping("/stocks")
-//    public void addAllStocks(@RequestBody Stock stock)
-//    {
-//        try
-//        {
-//            stockService.addStocksToDatabase();
-//        }
-//        catch (IOException e)
-//        {
-//            e.printStackTrace();
-//            e.getMessage();
-//        }
-//    }
+
+    @PostMapping("/stocks/load")
+    public void addAllStocks() throws IOException
+    {
+        stockService.addAllStocksToDatabase();
+    }
 }

@@ -3,6 +3,8 @@ package com.solstice.week2challenge.week2challenge.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solstice.week2challenge.week2challenge.model.Stock;
+import com.solstice.week2challenge.week2challenge.repository.StockRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,7 +17,23 @@ public class StockService
 {
     private List<Stock> stockList = new ArrayList<>();
 
-    public List<Stock> addStocksToDatabase() throws IOException
+    @Autowired
+    private StockRepository stockRepository;
+
+    public void addAllStocksToDatabase() throws IOException
+    {
+        try
+        {
+            stockRepository.save(createStockList());
+        }
+        catch (IOException e)
+        {
+            e.getMessage();
+            e.printStackTrace();
+        }
+    }
+
+    public List<Stock> createStockList() throws IOException
     {
         File jsonFile = new File("week1-stocks.json").getAbsoluteFile();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -32,16 +50,11 @@ public class StockService
                 stock.setPrice(stockList.get(i).getPrice());
                 stock.setVolume(stockList.get(i).getVolume());
                 stock.setDate(stockList.get(i).getDate());
+
+                stockList.add(i, stock);
             }
 
-            if (stockList.size() > 1)
-            {
-                System.out.println("Data inserted successfully");
-            }
-            else
-            {
-                System.out.println("Error inserting data into database");
-            }
+            return stockList;
 
         }
         catch (IOException e)
@@ -49,7 +62,7 @@ public class StockService
             e.getMessage();
         }
 
-        return stockList;
+        return null;
     }
 
 }
