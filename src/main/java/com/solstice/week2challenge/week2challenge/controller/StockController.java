@@ -4,37 +4,50 @@ import com.solstice.week2challenge.week2challenge.model.Stock;
 import com.solstice.week2challenge.week2challenge.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.Date;
+import java.util.ArrayList;
 
 @RestController
 public class StockController
 {
     @Autowired
-    private StockService stockService;
+    public StockService stockService;
 
-
-//    @PostMapping("/stocks")
-//    public List<Stock> addStockData()
-//    {
-//        try
-//        {
-//            return stockService.addStocksToDatabase();
-//        }
-//        catch (IOException e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-//
 
     @PostMapping("/stocks/load")
     public void addAllStocks() throws IOException
     {
-        stockService.addAllStocksToDatabase();
+        this.stockService.createStockList();
     }
+
+    @GetMapping("/stocks/{symbol}")
+    public ArrayList<Stock> searchBySymbol(@PathVariable String symbol)
+    {
+        String upperCaseSymbol = symbol.toUpperCase();
+        return stockService.searchBySymbol(upperCaseSymbol);
+    }
+
+    @GetMapping("/stocks/maxprice/{date}/{symbol}")
+    public Double searchForMaxPrice(@PathVariable Date date, @PathVariable String symbol)
+    {
+        String upperCaseSymbol = symbol.toUpperCase();
+        return stockService.getMaxPrice(date, upperCaseSymbol);
+    }
+
+    @GetMapping("/stocks/minprice/{date}/{symbol}")
+    public Double searchforLowestPrice(@PathVariable Date date, @PathVariable String symbol)
+    {
+        String upperCaseSymbol = symbol.toUpperCase();
+        return stockService.getLowestPrice(date, upperCaseSymbol);
+    }
+
+    @GetMapping("/stocks/volume/{date}/{symbol}")
+    public Integer searchForTotalVolume(@PathVariable Date date, @PathVariable String symbol)
+    {
+        String upperCaseSymbol = symbol.toUpperCase();
+        return stockService.getTotalVolume(date, upperCaseSymbol);
+    }
+
 }

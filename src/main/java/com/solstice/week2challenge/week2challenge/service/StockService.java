@@ -9,31 +9,21 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.DoubleBinaryOperator;
 
 @Service
 public class StockService
 {
-    private List<Stock> stockList = new ArrayList<>();
+    public ArrayList<Stock> stockList = new ArrayList<>();
 
     @Autowired
-    private StockRepository stockRepository;
+    public StockRepository stockRepository;
 
-    public void addAllStocksToDatabase() throws IOException
-    {
-        try
-        {
-            stockRepository.save(createStockList());
-        }
-        catch (IOException e)
-        {
-            e.getMessage();
-            e.printStackTrace();
-        }
-    }
 
-    public List<Stock> createStockList() throws IOException
+    public void createStockList() throws IOException
     {
         File jsonFile = new File("week1-stocks.json").getAbsoluteFile();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -42,19 +32,18 @@ public class StockService
         {
             this.stockList = objectMapper.readValue(jsonFile, new TypeReference<List<Stock>>() {});
 
-            Stock stock = new Stock();
-
             for (int i = 0; i < stockList.size(); i++)
             {
+                Stock stock = new Stock();
+
                 stock.setSymbol(stockList.get(i).getSymbol());
                 stock.setPrice(stockList.get(i).getPrice());
                 stock.setVolume(stockList.get(i).getVolume());
                 stock.setDate(stockList.get(i).getDate());
 
-                stockList.add(i, stock);
+                stockRepository.save(stock);
+                System.out.println("Stocks saved to database");
             }
-
-            return stockList;
 
         }
         catch (IOException e)
@@ -62,7 +51,26 @@ public class StockService
             e.getMessage();
         }
 
-        return null;
+    }
+
+    public ArrayList<Stock> searchBySymbol(String symbol)
+    {
+        return stockRepository.listStockBySymbol(symbol);
+    }
+
+    public Double getMaxPrice(Date date, String symbol)
+    {
+        return stockRepository.getMaxPrice(date, symbol);
+    }
+
+    public Double getLowestPrice(Date date, String symbol)
+    {
+        return stockRepository.getLowestPrice(date, symbol);
+    }
+
+    public Integer getTotalVolume(Date date, String symbol)
+    {
+        return stockRepository.getTotalVolume(date, symbol);
     }
 
 }

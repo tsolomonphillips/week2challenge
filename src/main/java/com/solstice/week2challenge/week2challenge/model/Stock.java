@@ -1,15 +1,15 @@
 package com.solstice.week2challenge.week2challenge.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
+@Table(name = "week2stockdb")
 public class Stock
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "stockId")
     private Integer stockId;
 
     private String symbol;
@@ -22,7 +22,7 @@ public class Stock
 
     }
 
-    public Stock(int stockId, String symbol, double price, int volume, Date date)
+    public Stock(Integer stockId, String symbol, Double price, Integer volume, Date date)
     {
         this.stockId = stockId;
         this.symbol = symbol;
@@ -31,13 +31,12 @@ public class Stock
         this.date = date;
     }
 
-
-    public int getStockId()
+    public Integer getStockId()
     {
         return stockId;
     }
 
-    public void setStockId(int stockId)
+    public void setStockId(Integer stockId)
     {
         this.stockId = stockId;
     }
@@ -52,22 +51,22 @@ public class Stock
         this.symbol = symbol;
     }
 
-    public double getPrice()
+    public Double getPrice()
     {
         return price;
     }
 
-    public void setPrice(double price)
+    public void setPrice(Double price)
     {
         this.price = price;
     }
 
-    public int getVolume()
+    public Integer getVolume()
     {
         return volume;
     }
 
-    public void setVolume(int volume)
+    public void setVolume(Integer volume)
     {
         this.volume = volume;
     }

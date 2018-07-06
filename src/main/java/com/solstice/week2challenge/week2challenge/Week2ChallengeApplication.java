@@ -11,4 +11,5 @@ public class Week2ChallengeApplication
 	{
 		SpringApplication.run(Week2ChallengeApplication.class, args);
 	}
+
 }
