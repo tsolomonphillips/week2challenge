@@ -23,4 +23,9 @@ public interface StockRepository extends CrudRepository<Stock, Integer>
 
     @Query(value = "SELECT sum(volume) FROM week2stockdb WHERE date = ?1 AND symbol = ?2", nativeQuery = true)
     Integer getTotalVolume(@Param("date") Date date, @Param("symbol") String symbol);
+
+    @Query(value = "SELECT price AS closingPrice FROM week2stockdb WHERE date = ? and symbol = ? " +
+            "ORDER BY price DESC LIMIT 1", nativeQuery = true)
+    Double getClosingPrice(@Param("date") Date date, @Param("symbol") String symbol);
+
 }

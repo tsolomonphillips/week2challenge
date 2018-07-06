@@ -10,44 +10,52 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 @RestController
+@RequestMapping("/stocks")
 public class StockController
 {
     @Autowired
     public StockService stockService;
 
 
-    @PostMapping("/stocks/load")
+    @PostMapping("/load")
     public void addAllStocks() throws IOException
     {
         this.stockService.createStockList();
     }
 
-    @GetMapping("/stocks/{symbol}")
+    @GetMapping("/{symbol}")
     public ArrayList<Stock> searchBySymbol(@PathVariable String symbol)
     {
         String upperCaseSymbol = symbol.toUpperCase();
         return stockService.searchBySymbol(upperCaseSymbol);
     }
 
-    @GetMapping("/stocks/maxprice/{date}/{symbol}")
+    @GetMapping("/maxprice/{date}/{symbol}")
     public Double searchForMaxPrice(@PathVariable Date date, @PathVariable String symbol)
     {
         String upperCaseSymbol = symbol.toUpperCase();
         return stockService.getMaxPrice(date, upperCaseSymbol);
     }
 
-    @GetMapping("/stocks/minprice/{date}/{symbol}")
+    @GetMapping("/minprice/{date}/{symbol}")
     public Double searchforLowestPrice(@PathVariable Date date, @PathVariable String symbol)
     {
         String upperCaseSymbol = symbol.toUpperCase();
         return stockService.getLowestPrice(date, upperCaseSymbol);
     }
 
-    @GetMapping("/stocks/volume/{date}/{symbol}")
+    @GetMapping("/volume/{date}/{symbol}")
     public Integer searchForTotalVolume(@PathVariable Date date, @PathVariable String symbol)
     {
         String upperCaseSymbol = symbol.toUpperCase();
         return stockService.getTotalVolume(date, upperCaseSymbol);
+    }
+
+    @GetMapping("/closingprice/{date}/{symbol}")
+    public Double searchForClosingPrice(@PathVariable Date date, @PathVariable String symbol)
+    {
+        String upperCaseSymbol = symbol.toUpperCase();
+        return stockService.getClosing(date, upperCaseSymbol);
     }
 
 }

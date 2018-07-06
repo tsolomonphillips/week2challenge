@@ -73,4 +73,9 @@ public class StockService
         return stockRepository.getTotalVolume(date, symbol);
     }
 
+    public Double getClosing(Date date, String symbol)
+    {
+        return stockRepository.getClosingPrice(date, symbol);
+    }
+
 }
