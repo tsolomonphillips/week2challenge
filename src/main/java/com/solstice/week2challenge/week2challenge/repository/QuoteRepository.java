@@ -1,0 +1,30 @@
+package com.solstice.week2challenge.week2challenge.repository;
+
+import com.solstice.week2challenge.week2challenge.model.Quote;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+
+@Repository
+public interface QuoteRepository extends CrudRepository<Quote, Integer>
+{
+    @Query(value = "SELECT * FROM week2stockdb WHERE symbol = ?", nativeQuery = true)
+    ArrayList<Quote> listStockBySymbol(@Param("symbol") String symbol);
+
+    @Query(value = "SELECT max(price) FROM week2stockdb WHERE date = ?1 AND symbol = ?2", nativeQuery = true)
+    Double getMaxPrice(@Param("date")String date, @Param("symbol") String symbol);
+
+    @Query(value = "SELECT min(price) FROM week2stockdb WHERE date = ?1 AND symbol = ?2", nativeQuery = true)
+    Double getLowestPrice(@Param("date") String date, @Param("symbol") String symbol);
+
+    @Query(value = "SELECT sum(volume) FROM week2stockdb WHERE date = ?1 AND symbol = ?2", nativeQuery = true)
+    Integer getTotalVolume(@Param("date") String date, @Param("symbol") String symbol);
+
+    @Query(value = "SELECT price AS closingPrice FROM week2stockdb WHERE date = ? and symbol = ? " +
+            "ORDER BY price DESC LIMIT 1", nativeQuery = true)
+    Double getClosingPrice(@Param("date") String date, @Param("symbol") String symbol);
+
+}
