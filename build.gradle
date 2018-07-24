@@ -44,9 +44,9 @@ dependencies {
 
 	compile("io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry")
 
-	//runtime('mysql:mysql-connector-java')
+	runtime('mysql:mysql-connector-java')
 	runtime "org.springframework.boot:spring-boot-devtools"
-	runtime "com.h2database:h2"
+	runtime('com.h2database:h2')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

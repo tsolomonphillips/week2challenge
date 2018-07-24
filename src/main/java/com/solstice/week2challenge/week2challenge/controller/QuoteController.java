@@ -27,9 +27,9 @@ public class QuoteController
     }
 
     @GetMapping("")
-    public void getAllStocks()
+    public Iterable<Quote> getAllStocks()
     {
-        this.quoteService.getAllStocks();
+        return quoteService.getAllStocks();
     }
 
     @GetMapping("/{symbol}")
